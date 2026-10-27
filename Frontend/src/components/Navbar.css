@@ -1,0 +1,161 @@
+/* ─── Navbar ─────────────────────────────────────────── */
+.navbar {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  background: rgba(18, 18, 28, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* ─── Brand ──────────────────────────────────────────── */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-logo-icon {
+  color: #646cff;
+}
+
+.nav-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #f0f0f0;
+  letter-spacing: -0.3px;
+}
+
+.nav-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #646cff, #7c3aed);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  line-height: 1.4;
+}
+
+/* ─── Right Side ─────────────────────────────────────── */
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-loading .nav-spin {
+  color: #666;
+  animation: navSpin 0.8s linear infinite;
+}
+
+/* ─── Logged-in User ─────────────────────────────────── */
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.nav-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #646cff, #7c3aed);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.nav-username {
+  color: #ccc;
+  font-size: 0.9rem;
+  font-weight: 500;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-logout {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #999;
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.nav-logout:hover:not(:disabled) {
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.nav-history-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  color: #818cf8;
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.nav-history-btn:hover {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.4);
+  color: #a5b4fc;
+}
+
+.nav-logout:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─── Get Started Button ─────────────────────────────── */
+.nav-login-btn {
+  background: linear-gradient(135deg, #646cff, #7c3aed);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+  letter-spacing: -0.2px;
+}
+
+.nav-login-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(100, 108, 255, 0.3);
+}
+
+@keyframes navSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

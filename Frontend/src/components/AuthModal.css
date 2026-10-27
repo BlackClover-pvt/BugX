@@ -1,0 +1,276 @@
+/* ─── Overlay ────────────────────────────────────────── */
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.25s ease;
+}
+
+/* ─── Modal Card ─────────────────────────────────────── */
+.auth-modal {
+  background: linear-gradient(165deg, #1a1a2e 0%, #16162a 100%);
+  border: 1px solid rgba(100, 108, 255, 0.12);
+  border-radius: 20px;
+  padding: 2.2rem 2rem 2rem;
+  width: 420px;
+  max-width: 92vw;
+  position: relative;
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 0 60px rgba(100, 108, 255, 0.06);
+  animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── Close Button ───────────────────────────────────── */
+.auth-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, background 0.2s;
+}
+.auth-close:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Tabs ───────────────────────────────────────────── */
+.auth-tabs {
+  display: flex;
+  margin-bottom: 1.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 0;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  border: none;
+  background: transparent;
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 9px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+  letter-spacing: -0.2px;
+}
+
+.auth-tab.active {
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.2), rgba(124, 58, 237, 0.15));
+  color: #c4b5fd;
+  box-shadow: 0 2px 8px rgba(100, 108, 255, 0.1);
+}
+
+.auth-tab:hover:not(.active) {
+  color: #999;
+}
+
+/* ─── Error Message ──────────────────────────────────── */
+.auth-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  font-size: 0.83rem;
+  margin-bottom: 1rem;
+  animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  line-height: 1.4;
+}
+
+/* ─── Form ───────────────────────────────────────────── */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ─── Input Field ────────────────────────────────────── */
+.auth-field {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 0 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.auth-field:focus-within {
+  border-color: rgba(100, 108, 255, 0.5);
+  background: rgba(100, 108, 255, 0.04);
+  box-shadow: 0 0 0 3px rgba(100, 108, 255, 0.08);
+}
+
+.auth-icon {
+  color: #4a4a6a;
+  flex-shrink: 0;
+  transition: color 0.3s ease;
+}
+
+.auth-field:focus-within .auth-icon {
+  color: #7c7cff;
+}
+
+.auth-field input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #e2e8f0;
+  font-size: 0.92rem;
+  padding: 0.8rem 0.65rem;
+  font-family: inherit;
+  letter-spacing: -0.1px;
+}
+
+.auth-field input::placeholder {
+  color: #444;
+}
+
+.auth-field input:-webkit-autofill,
+.auth-field input:-webkit-autofill:hover,
+.auth-field input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #e2e8f0;
+  -webkit-box-shadow: 0 0 0px 1000px #1a1a2e inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ─── Eye Toggle ─────────────────────────────────────── */
+.auth-eye {
+  background: none;
+  border: none;
+  color: #4a4a6a;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  transition: color 0.2s;
+}
+.auth-eye:hover {
+  color: #a5b4fc;
+}
+
+/* ─── Submit Button ──────────────────────────────────── */
+.auth-submit {
+  margin-top: 0.6rem;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #646cff 0%, #7c3aed 100%);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: inherit;
+  letter-spacing: -0.2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-submit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.auth-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(100, 108, 255, 0.35);
+}
+
+.auth-submit:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+.auth-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.auth-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─── Spinner ────────────────────────────────────────── */
+.auth-spinner {
+  animation: spin 0.7s linear infinite;
+}
+
+/* ─── Footer ─────────────────────────────────────────── */
+.auth-footer {
+  text-align: center;
+  color: #555;
+  font-size: 0.83rem;
+  margin-top: 1.4rem;
+}
+
+.auth-footer span {
+  color: #a5b4fc;
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.auth-footer span:hover {
+  color: #c4b5fd;
+  text-decoration: underline;
+}
+
+/* ─── Animations ─────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-6px); }
+  30% { transform: translateX(5px); }
+  45% { transform: translateX(-4px); }
+  60% { transform: translateX(3px); }
+  75% { transform: translateX(-2px); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
