@@ -1,4 +1,4 @@
-# 🐞 BugX — AI-Powered Intelligent Code Review Platform
+﻿# 🐞 BugX — AI-Powered Intelligent Code Review Platform
 
 <div align="center">
 
@@ -118,7 +118,6 @@ BugX/
 ├── .env.example                            # Root environment variable template
 ├── .gitignore                              # Git exclusion rules (node_modules, .env, dist)
 ├── DEPENDENCIES.md                         # Detailed architectural dependency audit
-├── PROJECT_HANDOVER_PHASES_5_TO_11.md      # Comprehensive roadmap & design specifications
 ├── README.md                               # Primary public documentation
 │
 ├── BackEnd/                                # Node.js / Express TypeScript Server
