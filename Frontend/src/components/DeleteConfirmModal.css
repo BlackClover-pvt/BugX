@@ -1,0 +1,182 @@
+/* ─── Backdrop ───────────────────────────────────────────────────── */
+.dcm-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 300;
+  animation: dcmFadeIn 0.18s ease;
+}
+
+/* ─── Modal ──────────────────────────────────────────────────────── */
+.dcm-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 310;
+  width: 420px;
+  max-width: 92vw;
+  background: #131721;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(239, 68, 68, 0.08);
+  overflow: hidden;
+  animation: dcmSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── Header ─────────────────────────────────────────────────────── */
+.dcm-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1.25rem 1.25rem 0 1.25rem;
+}
+
+.dcm-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dcm-icon { color: #f87171; }
+
+.dcm-header-text { flex: 1; }
+
+.dcm-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 0.2rem 0;
+}
+
+.dcm-subtitle {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.dcm-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  background: none;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+
+.dcm-close-btn:hover {
+  color: #94a3b8;
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ─── Body ───────────────────────────────────────────────────────── */
+.dcm-body {
+  padding: 1rem 1.25rem;
+}
+
+.dcm-description {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin: 0 0 0.6rem 0;
+}
+
+.dcm-review-title {
+  color: #e2e8f0;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.dcm-warning {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ─── Actions ────────────────────────────────────────────────────── */
+.dcm-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  padding: 0.85rem 1.25rem 1.25rem 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dcm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  font-family: inherit;
+}
+
+.dcm-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dcm-btn-cancel {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+}
+
+.dcm-btn-cancel:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+}
+
+.dcm-btn-delete {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+}
+
+.dcm-btn-delete:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #fee2e2;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.2);
+}
+
+.dcm-spinner {
+  animation: dcmSpin 0.8s linear infinite;
+}
+
+/* ─── Animations ─────────────────────────────────────────────────── */
+@keyframes dcmFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes dcmSlideIn {
+  from { opacity: 0; transform: translate(-50%, -46%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+@keyframes dcmSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

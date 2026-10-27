@@ -1,0 +1,266 @@
+/* ─── SubmissionControls Root ───────────────────────────────────────────── */
+.sc-root {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.65rem 1rem 0.6rem 1rem;
+  background: rgba(13, 16, 23, 0.85);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ─── Rows ───────────────────────────────────────────────────────────────── */
+.sc-row {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+}
+
+.sc-row-focus {
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* ─── Label ─────────────────────────────────────────────────────────────── */
+.sc-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  white-space: nowrap;
+  margin-bottom: 0.28rem;
+  display: block;
+}
+
+.sc-row-focus .sc-label {
+  margin-bottom: 0;
+}
+
+/* ─── Field wrappers ─────────────────────────────────────────────────────── */
+.sc-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.sc-field-counter {
+  flex: 1;
+  min-width: 180px;
+}
+
+.sc-field-upload {
+  min-width: 140px;
+}
+
+/* ─── Language Select ────────────────────────────────────────────────────── */
+.sc-select-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.sc-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #cbd5e1;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.38rem 2.2rem 0.38rem 0.75rem;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.18s ease, background 0.18s ease;
+  font-family: inherit;
+  min-width: 140px;
+  /* Custom chevron */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+}
+
+.sc-select:hover,
+.sc-select:focus {
+  border-color: rgba(99, 102, 241, 0.5);
+  background-color: rgba(99, 102, 241, 0.06);
+}
+
+.sc-select option {
+  background: #13161f;
+  color: #e2e8f0;
+}
+
+/* ─── File Upload ────────────────────────────────────────────────────────── */
+.sc-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sc-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.36rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: inherit;
+}
+
+.sc-upload-btn:hover {
+  color: #a5b4fc;
+  border-color: rgba(99, 102, 241, 0.4);
+  background: rgba(99, 102, 241, 0.06);
+}
+
+.sc-file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.6rem;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 7px;
+  font-size: 0.78rem;
+  color: #a5b4fc;
+  max-width: 180px;
+}
+
+.sc-file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 110px;
+}
+
+.sc-file-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border-radius: 3px;
+  transition: color 0.15s;
+  font-family: inherit;
+}
+
+.sc-file-clear:hover {
+  color: #f87171;
+}
+
+/* ─── Byte Counter ───────────────────────────────────────────────────────── */
+.sc-counter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.2rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  font-family: "Fira Code", monospace;
+  margin-bottom: 0.3rem;
+  transition: color 0.3s ease;
+}
+
+.sc-counter-val { font-weight: 700; }
+.sc-counter-sep { color: #334155; }
+.sc-counter-max { color: #475569; }
+.sc-counter-pct { color: #475569; font-size: 0.7rem; }
+
+.counter-green { color: #4ade80; }
+.counter-amber { color: #fb923c; }
+.counter-red   { color: #f87171; }
+
+.sc-counter-bar-bg {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.sc-counter-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.2s ease, background-color 0.3s ease;
+}
+
+.sc-counter-bar-fill.counter-green { background: #4ade80; }
+.sc-counter-bar-fill.counter-amber { background: #fb923c; }
+.sc-counter-bar-fill.counter-red   { background: #f87171; }
+
+/* ─── Focus Chips ────────────────────────────────────────────────────────── */
+.sc-chips {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.sc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.28rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #64748b;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  font-family: inherit;
+  user-select: none;
+}
+
+.sc-chip:hover {
+  color: #94a3b8;
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.sc-chip-active {
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+.sc-chip-active:hover {
+  background: rgba(99, 102, 241, 0.18);
+  border-color: rgba(99, 102, 241, 0.55);
+}
+
+.sc-chip-icon {
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+/* ─── Provider Notice ────────────────────────────────────────────────────── */
+.sc-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  padding: 0.45rem 0.75rem;
+  background: rgba(251, 191, 36, 0.04);
+  border: 1px solid rgba(251, 191, 36, 0.12);
+  border-radius: 7px;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+.sc-notice-icon {
+  font-size: 0.85rem;
+  margin-top: 0.05rem;
+  flex-shrink: 0;
+}
+
+.sc-notice strong {
+  color: #c7d2fe;
+}
