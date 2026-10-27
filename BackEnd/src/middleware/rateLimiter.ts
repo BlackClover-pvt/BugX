@@ -7,7 +7,7 @@ import rateLimit from "express-rate-limit";
 
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10,
+  max: process.env.NODE_ENV === "development" ? 200 : 10,
   standardHeaders: true,   // return RateLimit-* headers (RFC 6585)
   legacyHeaders: false,     // disable X-RateLimit-* headers
   message: {
@@ -20,12 +20,12 @@ export const authLimiter = rateLimit({
 
 // ─── Review Creation Limiter ──────────────────────────────────────────────────
 // Protects POST /reviews against Gemini API quota abuse.
-// Allows max 15 submissions per authenticated user per hour.
+// Allows max 15 submissions per authenticated user per hour (200 in development).
 // Keyed on userId (session-scoped) so users don't share rate-limit buckets.
 
 export const reviewLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 15,
+  max: process.env.NODE_ENV === "development" ? 200 : 15,
   standardHeaders: true,
   legacyHeaders: false,
   message: {

@@ -50,10 +50,17 @@ export default function AuthPage() {
         await register(displayName.trim(), email, password);
       }
     } catch (err) {
-      const msg =
-        err.response?.data?.details?.[0] ||
-        err.response?.data?.error ||
-        'Authentication failed. Please verify your credentials.';
+      const data = err.response?.data;
+      let msg = '';
+      if (Array.isArray(data?.details) && data.details.length > 0) {
+        msg = data.details[0];
+      } else if (typeof data?.details === 'string') {
+        msg = data.details;
+      } else if (data?.error) {
+        msg = data.error;
+      } else {
+        msg = 'Authentication failed. Please verify your credentials.';
+      }
       setError(msg);
     } finally {
       setLoading(false);
@@ -153,6 +160,25 @@ export default function AuthPage() {
             {error && (
               <div className="authpage-error">
                 <span>{error}</span>
+                {mode === 'signup' && error.toLowerCase().includes('already registered') && (
+                  <button
+                    type="button"
+                    onClick={() => switchMode('login')}
+                    style={{
+                      display: 'block',
+                      marginTop: '6px',
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--primary-light, #a78bfa)',
+                      textDecoration: 'underline',
+                      cursor: 'pointer',
+                      fontSize: '13px',
+                      padding: 0,
+                    }}
+                  >
+                    Switch to Sign In →
+                  </button>
+                )}
               </div>
             )}
 
