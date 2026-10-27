@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Upload, FileCode, X } from 'lucide-react';
+import { Upload, FileCode, X, AlertTriangle } from 'lucide-react';
 import './SubmissionControls.css';
 
 // ─── Language Config ──────────────────────────────────────────────────────────
@@ -193,12 +193,11 @@ export default function SubmissionControls({
         </div>
       </div>
 
-      {/* ── External provider notice ── */}
+      {/* ── Caution notice ── */}
       <div className="sc-notice">
-        <span className="sc-notice-icon">🔗</span>
+        <AlertTriangle size={15} className="sc-notice-icon" />
         <span>
-          Your code is securely sent to <strong>Google Gemini</strong> for AI analysis.
-          Avoid submitting sensitive credentials or private keys.
+          <strong>Caution:</strong> Avoid submitting sensitive credentials or private keys.
         </span>
       </div>
 

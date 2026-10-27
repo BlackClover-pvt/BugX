@@ -241,26 +241,26 @@
   line-height: 1;
 }
 
-/* ─── Provider Notice ────────────────────────────────────────────────────── */
+/* ─── Caution Notice ─────────────────────────────────────────────────────── */
 .sc-notice {
   display: flex;
-  align-items: flex-start;
-  gap: 0.45rem;
-  padding: 0.45rem 0.75rem;
-  background: rgba(251, 191, 36, 0.04);
-  border: 1px solid rgba(251, 191, 36, 0.12);
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.22);
   border-radius: 7px;
   font-size: 0.75rem;
-  color: #94a3b8;
-  line-height: 1.5;
+  color: #d1d5db;
+  line-height: 1.4;
 }
 
 .sc-notice-icon {
-  font-size: 0.85rem;
-  margin-top: 0.05rem;
+  color: #f59e0b;
   flex-shrink: 0;
 }
 
 .sc-notice strong {
-  color: #c7d2fe;
+  color: #fbbf24;
+  font-weight: 600;
 }
