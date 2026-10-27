@@ -1,145 +1,241 @@
-# 🐞 BugX — AI-Powered Code Reviewer
+# 🐞 BugX — AI-Powered Intelligent Code Review Platform
 
-[![React](https://img.shields.io/badge/React-19.0-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-6.1-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Node.js](https://img.shields.io/badge/Node.js-Express-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Supported-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Drizzle_ORM-4169E1?logo=postgresql&logoColor=white)](https://orm.drizzle.team/)
-[![Gemini](https://img.shields.io/badge/AI-Google_Gemini-4285F4?logo=google&logoColor=white)](https://aistudio.google.com/)
+<div align="center">
 
-**BugX** is a modern, developer-focused web application designed to elevate code quality through real-time AI code reviews. Write or paste code in an interactive code editor, and receive immediate, actionable feedback covering bug detection, security best practices, and performance optimizations.
+[![GitHub stars](https://img.shields.io/github/stars/BlackClover-pvt/BugX?style=for-the-badge&logo=github&color=6366f1)](https://github.com/BlackClover-pvt/BugX/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/BlackClover-pvt/BugX?style=for-the-badge&logo=github&color=8b5cf6)](https://github.com/BlackClover-pvt/BugX/network/members)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg?style=for-the-badge&color=3b82f6)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=for-the-badge&color=10b981)](CONTRIBUTING.md)
 
----
+**A high-performance, full-stack automated code review workspace powered by Google Gemini, TypeScript, Express, PostgreSQL, and React.**
 
-## ✨ Features
+[Key Features](#-key-features) • [Architecture](#-architecture--data-flow) • [Tech Stack](#-technology-stack) • [Quick Start](#-quick-start-guide) • [API Reference](#-api-reference) • [Testing](#-testing--quality-assurance)
 
-- 🔐 **Full Authentication System**: Session-based authentication powered by `express-session`, `connect-pg-simple`, and `argon2` password hashing.
-- 💾 **Persistent Review History (Phase 4)**: Code reviews and findings are saved to PostgreSQL with status tracking (`PENDING` -> `COMPLETED`/`FAILED`), user-scoped ownership, and cascading deletes.
-- 🎨 **Clean & Sleek Dark UI**: Modern glassmorphic interface with ambient glow effects, responsive tabbed authentication, and smooth transitions.
-- ⚡ **Interactive Code Editor**: Syntax-highlighted in-browser code editor using Prism.js with size checks and review ID tracking.
-- 🤖 **AI-Powered Code Analysis**: Powered by Google Gemini (`gemini-flash` models), delivering markdown-formatted code reviews, issue breakdowns, and refactoring tips.
-- 🛡️ **Type-Safe Database Schema**: PostgreSQL integrated with Drizzle ORM for streamlined migrations, enums, and type safety.
-- 👤 **Session Persistence**: Automatic session restoration on page refresh with secure HTTP-only cookies.
+</div>
 
 ---
 
-## 🏗️ Architecture & Tech Stack
+## 📖 Overview
 
-### **Frontend** (`/FrontEnd`)
-- **Core**: React 19, Vite
-- **Styling**: Vanilla CSS (modular design system, dark mode glassmorphism)
-- **Editor**: `react-simple-code-editor` + `prismjs`
-- **Markdown & Highlight**: `react-markdown` + `rehype-highlight` + `highlight.js`
-- **Icons**: `lucide-react`
-- **HTTP Client**: `axios` (configured with `withCredentials: true`)
+**BugX** is an enterprise-grade automated code review platform designed to catch subtle bugs, security vulnerabilities (OWASP Top 10), performance bottlenecks, and style antipatterns before code reaches production. 
 
-### **Backend** (`/BackEnd`)
-- **Runtime & Framework**: Node.js, Express, `tsx`
-- **AI Engine**: `@google/generative-ai` (Google Gemini API)
-- **Database**: PostgreSQL (Local or Supabase / Neon)
-- **ORM & Migrations**: Drizzle ORM (`drizzle-kit`)
-- **Authentication**: `express-session`, `connect-pg-simple` (Postgres session store), `argon2`
-- **Validation**: Zod schema validation
-- **Security**: CORS, secure cookie policies, parameterized SQL queries
+Developers paste code snippets or upload source files, choose target review focuses (*Correctness, Security, Performance, Readability, or General*), and receive an instant, multi-dimensional assessment with categorized findings, exact line indicators, composite risk scoring, and drop-in code fixes.
+
+### 💡 Core Design Philosophy
+- **100% Free & Open-Source Stack**: Leverages Google Gemini free-tier AI (`gemini-2.5-flash`), Supabase/Neon free-tier PostgreSQL, and modern open-source tooling without third-party SaaS lock-in.
+- **Defensive Engineering**: Every LLM response is strictly validated against a compile-time **Zod** schema before entering database persistence, preventing hallucinations or malformed JSON from reaching clients.
+- **Zero-Trust Security**: Multi-tier authentication using **Argon2id** password hashing, HTTP-only server-side session cookies backed by PostgreSQL, and multi-window rate-limiting.
+- **Glassmorphic Developer Experience**: Fast, responsive dark-mode workspace crafted with Vanilla CSS and micro-interactions, avoiding heavy CSS utility bloat.
 
 ---
 
-## 📁 Repository Structure
+## ✨ Key Features
 
-```text
-code-review-main/
-├── .env.example              # Example environment variables template
-├── README.md                 # Project documentation
-├── BackEnd/
-│   ├── .env.example          # Backend-specific environment template
-│   ├── drizzle.config.ts     # Drizzle Kit configuration
-│   ├── package.json          # Backend dependencies and scripts
-│   ├── server.js             # Server entry point
-│   ├── src/
-│   │   ├── app.js            # Express app configuration & middleware
-│   │   ├── controllers/      # Route controllers (auth, review, ai)
-│   │   ├── db/               # Drizzle database client & schema definitions
-│   │   ├── middleware/       # Session & requireAuth middleware
-│   │   ├── routes/           # Express routes (auth.routes, review.routes, ai.routes)
-│   │   ├── services/         # Gemini AI review service
-│   │   └── validators/       # Zod validation schemas (auth, review)
-│   └── drizzle/              # Generated SQL migrations
-└── FrontEnd/
-    ├── package.json          # Frontend dependencies and scripts
-    ├── vite.config.js        # Vite configuration
-    ├── index.html            # HTML entry template
-    └── src/
-        ├── api.js            # Pre-configured Axios instance (withCredentials: true)
-        ├── App.jsx           # Main application routing and workspace
-        ├── App.css           # Workspace & layout styles
-        ├── components/
-        │   ├── AuthPage.jsx  # Primary Login / Register landing view
-        │   ├── AuthPage.css  # AuthPage styles
-        │   ├── Navbar.jsx    # Top navigation & user profile
-        │   ├── Navbar.css    # Navbar styles
-        │   ├── AuthModal.jsx # Modal-based auth component
-        │   └── AuthModal.css # AuthModal styles
-        └── context/
-            └── AuthContext.jsx # Global auth state provider (useAuth)
+### 🔍 Multi-Dimensional AI Code Inspection
+- **Configurable Review Focus**: Tailor the AI review prompt to specific concerns: *General Audit*, *Security Vulnerabilities*, *Performance Optimizations*, *Correctness & Logic Bugs*, or *Readability & Clean Code*.
+- **Multi-Language Support**: Seamlessly analyzes JavaScript, TypeScript, Python, Go, Rust, Java, C++, PHP, SQL, HTML/CSS, and Shell scripts.
+- **Actionable Structured Findings**: Findings are ranked by severity (`CRITICAL`, `HIGH`, `MEDIUM`, `LOW`, `INFO`) with associated line numbers, root cause explanations, and ready-to-use code solutions.
+
+### 📊 Dynamic Risk Meter & Quality Score
+- Calculates an instant composite risk score (0 to 100%) based on finding severity density.
+- Visual risk status badge (*Clean, Low Risk, Moderate Risk, Elevated Risk, Critical Risk*) for rapid triage.
+
+### 🔐 Robust User Authentication & Session Security
+- **Argon2id Hashing**: State-of-the-art password derivation resisting GPU cracking attacks.
+- **Stateful PostgreSQL Sessions**: Managed via `express-session` with `connect-pg-simple` store, eliminating JWT revocation hazards.
+- **Strict Cookie Configuration**: `httpOnly`, `sameSite: lax`, and conditional `secure` cookies with automatic CSRF/CORS credential isolation.
+
+### 📜 Persistent Review History Dashboard
+- **User-Scoped Isolation**: Every review is tied to the authenticated user ID and strictly protected at the database query level.
+- **Historical Inspection**: Slide-out history drawer to review, inspect findings, or reload past submissions.
+- **Cascade Deletion**: Safely wipe review sessions and associated finding records with modal confirmation safeguards.
+
+### 🛡️ Production Rate Limiting & Reliability
+- Tiered IP and user rate limiters guarding AI submission endpoints against DDoS, token drainage, and brute-force abuse.
+- Graceful error recovery: Automatic fallbacks and structured JSON repair for intermittent provider anomalies.
+
+---
+
+## 🏗 Architecture & Data Flow
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                        Frontend (React 19 + Vite)                     │
+│  ┌──────────────────────┐  ┌───────────────────┐  ┌─────────────────┐ │
+│  │  SubmissionControls  │  │     RiskMeter     │  │   FindingCards  │ │
+│  └──────────┬───────────┘  └─────────▲─────────┘  └────────▲────────┘ │
+│             │ Axios (Credentials)    │                     │          │
+└─────────────┼────────────────────────┼─────────────────────┼──────────┘
+              │ POST /reviews          │ Reviews & Findings  │
+              ▼                        │                     │
+┌──────────────────────────────────────┴─────────────────────┴──────────┐
+│                         Backend (Express + TypeScript)                 │
+│  ┌────────────────────┐  ┌──────────────────┐  ┌───────────────────┐  │
+│  │   Rate Limiting    │─▶│ Session Auth MW  │─▶│ Review Controller │  │
+│  │ (Tiered IP Limiter)│  │  (requireAuth)   │  │   & Validator     │  │
+│  └────────────────────┘  └──────────────────┘  └─────────┬─────────┘  │
+│                                                          │            │
+│                 ┌────────────────────────────────────────┼──────────┐ │
+│                 │                                        ▼          │ │
+│                 │                             ┌──────────────────┐  │ │
+│                 │                             │ Gemini AI Service│  │ │
+│                 │                             │ (Structured Mode)│  │ │
+│                 │                             └──────────┬───────┘  │ │
+│                 ▼                                        │          │ │
+│     ┌──────────────────────┐                  ┌──────────▼───────┐  │ │
+│     │   PostgreSQL DB      │◀─────────────────│  Zod Schema      │  │ │
+│     │ (Drizzle ORM Tables) │  Persist Review  │  Validation      │  │ │
+│     └──────────────────────┘  & Findings      └──────────────────┘  │ │
+└───────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🚀 Getting Started
+## 💻 Technology Stack
 
-Follow these instructions to clone and run BugX locally on your machine.
+| Layer | Technology | Key Capabilities & Purpose |
+| :--- | :--- | :--- |
+| **Frontend Framework** | [React 19](https://react.dev/) | Component architecture, unified state management, custom context |
+| **Build Tool** | [Vite 6](https://vitejs.dev/) | Sub-second HMR, optimized ES modules bundle generation |
+| **Styling & UI** | Vanilla CSS Design System | Custom dark theme, glassmorphism, responsive split-pane layout |
+| **Syntax Highlighting** | [Prism.js](https://prismjs.com/) | Real-time syntax coloring for multiple programming languages |
+| **Backend Runtime** | [Node.js](https://nodejs.org/) & [TypeScript](https://www.typescriptlang.org/) | Type-safe backend application with `tsx` development execution |
+| **Server Framework** | [Express.js 4](https://expressjs.com/) | RESTful routing, modular controller layers, robust middleware pipelines |
+| **Database & ORM** | [PostgreSQL](https://www.postgresql.org/) & [Drizzle ORM](https://orm.drizzle.team/) | Type-safe schema definition, relations, automated SQL migrations |
+| **Database Driver** | [postgres.js](https://github.com/porsager/postgres) | High-performance, lightweight PostgreSQL connection client |
+| **Authentication** | [Argon2](https://github.com/ranisalt/node-argon2) & [express-session](https://github.com/expressjs/session) | Cryptographic password hashing and server-side session persistence |
+| **AI Intelligence** | [Google Gen AI SDK](https://github.com/google/generative-ai-js) | `gemini-2.5-flash` model invocation with structured system prompts |
+| **Schema Validation** | [Zod](https://zod.dev/) | Strict runtime data contracts for HTTP payloads and AI outputs |
+| **Rate Limiting** | [express-rate-limit](https://github.com/express-rate-limit/express-rate-limit) | Anti-abuse protection, IP window limiting, burst containment |
+| **Testing** | [Vitest](https://vitest.dev/) | Lightning-fast unit and integration testing suite |
+
+---
+
+## 📂 Project Structure
+
+```
+BugX/
+├── .env.example                            # Root environment variable template
+├── .gitignore                              # Git exclusion rules (node_modules, .env, dist)
+├── DEPENDENCIES.md                         # Detailed architectural dependency audit
+├── PROJECT_HANDOVER_PHASES_5_TO_11.md      # Comprehensive roadmap & design specifications
+├── README.md                               # Primary public documentation
+│
+├── BackEnd/                                # Node.js / Express TypeScript Server
+│   ├── drizzle/                            # Generated SQL migration history & schema snapshots
+│   │   ├── 0000_burly_silvermane.sql
+│   │   └── meta/
+│   ├── src/
+│   │   ├── __tests__/                      # Automated Vitest test suite
+│   │   │   ├── auth.test.ts                # Authentication endpoint & password hashing tests
+│   │   │   ├── review.test.ts              # Code review creation & retrieval tests
+│   │   │   └── validator.test.ts           # Zod schema validation & payload boundary tests
+│   │   ├── controllers/
+│   │   │   ├── ai.controller.js            # Stateless legacy AI endpoint handler
+│   │   │   ├── auth.controller.ts          # Register, login, session profile & logout handlers
+│   │   │   └── review.controller.ts        # User-scoped review CRUD & persistence controllers
+│   │   ├── db/
+│   │   │   ├── index.ts                    # PostgreSQL pool connection instance via Drizzle
+│   │   │   └── schema.ts                   # Relational tables: users, sessions, reviews, findings
+│   │   ├── middleware/
+│   │   │   ├── rateLimiter.ts              # Tiered IP rate limiting rules
+│   │   │   ├── requireAuth.ts              # Route guard enforcing active user session
+│   │   │   └── session.ts                  # PostgreSQL session middleware configuration
+│   │   ├── routes/
+│   │   │   ├── ai.routes.js                # Direct prompt testing endpoints
+│   │   │   ├── auth.routes.ts              # Public & authenticated auth routes
+│   │   │   └── review.routes.ts            # RESTful review management endpoints
+│   │   ├── services/
+│   │   │   └── ai.service.ts               # Gemini AI prompt orchestration & model wrapper
+│   │   ├── validators/
+│   │   │   ├── aiResponse.validator.ts     # Zod schema enforcing AI JSON output integrity
+│   │   │   ├── auth.validator.ts           # Registration & login payload validators
+│   │   │   └── review.validator.ts         # Code submission & parameter validators
+│   │   └── app.ts                          # Express application configuration & middleware setup
+│   ├── drizzle.config.ts                   # Drizzle Kit migration configuration
+│   ├── package.json                        # Backend scripts & dependency declarations
+│   ├── server.js                           # Server bootstrap & port listener
+│   ├── tsconfig.json                       # Backend TypeScript compilation options
+│   └── vitest.config.ts                    # Vitest configuration
+│
+└── Frontend/                               # React 19 / Vite Single Page Application
+    ├── public/
+    │   └── vite.svg
+    ├── src/
+    │   ├── assets/
+    │   ├── components/
+    │   │   ├── AuthModal.jsx               # Quick login/register dialog modal
+    │   │   ├── AuthPage.jsx                # Dedicated authentication landing page
+    │   │   ├── DeleteConfirmModal.jsx      # Safe deletion confirmation modal
+    │   │   ├── FindingCard.jsx             # Categorized finding card with code solutions
+    │   │   ├── HistoryDrawer.jsx           # Slide-out review history drawer
+    │   │   ├── Navbar.jsx                  # Header navigation & user status bar
+    │   │   ├── RiskMeter.jsx               # Visual composite risk meter & score component
+    │   │   └── SubmissionControls.jsx      # Code input, language picker & focus selector
+    │   ├── context/
+    │   │   └── AuthContext.jsx             # React auth provider & session state hook (useAuth)
+    │   ├── api.js                          # Pre-configured Axios instance (withCredentials: true)
+    │   ├── App.css                         # Layout grid, panels & workspace design system
+    │   ├── App.jsx                         # Main app routing, review state & workspace logic
+    │   ├── index.css                       # Global CSS variables, reset & typography
+    │   └── main.jsx                        # React root entry point
+    ├── index.html                          # HTML shell
+    ├── package.json                        # Frontend dependencies & build scripts
+    ├── tsconfig.json                       # Frontend TypeScript definitions
+    └── vite.config.js                      # Vite server & build configurations
+```
+
+---
+
+## 🚀 Quick Start Guide
+
+Follow these steps to run BugX locally in under 5 minutes.
 
 ### Prerequisites
 
+Ensure you have the following installed on your machine:
 - **Node.js**: `v18.0.0` or higher ([Download Node.js](https://nodejs.org/))
 - **npm**: `v9.0.0` or higher
-- **PostgreSQL Database**:
-  - Local PostgreSQL instance (e.g. via Postgres.app, Docker, or installer), OR
-  - Free cloud PostgreSQL database ([Supabase](https://supabase.com/) or [Neon](https://neon.tech/))
-- **Google Gemini API Key**: Free API key from [Google AI Studio](https://aistudio.google.com/)
-
-> 📖 **Full Dependency Breakdown**: For an in-depth reference of all packages and their architectural roles in BugX, see [DEPENDENCIES.md](DEPENDENCIES.md).
+- **PostgreSQL**: A running local PostgreSQL instance **OR** a free cloud database ([Supabase](https://supabase.com/) / [Neon](https://neon.tech/))
+- **Google Gemini API Key**: Free key from [Google AI Studio](https://aistudio.google.com/)
 
 ---
 
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/code-review.git
-cd code-review
+git clone https://github.com/BlackClover-pvt/BugX.git
+cd BugX
 ```
 
 ---
 
 ### Step 2: Configure Environment Variables
 
-Create your `.env` file in the `BackEnd/` directory by copying the provided example:
+Create your backend configuration by copying the root template:
 
 ```bash
-# On Linux / macOS
-cp .env.example BackEnd/.env
-
 # On Windows (PowerShell)
 Copy-Item .env.example -Destination BackEnd\.env
+
+# On Linux / macOS
+cp .env.example BackEnd/.env
 ```
 
-Open `BackEnd/.env` in your text editor and update the following values:
+Open `BackEnd/.env` and supply your actual credentials:
 
 ```env
 # Server
 PORT=3000
 NODE_ENV=development
 
-# Google Gemini API Key (Get yours at https://aistudio.google.com/)
+# Google Gemini API Key (Get free key from https://aistudio.google.com/)
 GOOGLE_GEMINI_KEY=your_actual_gemini_api_key_here
 
 # PostgreSQL Connection String
-# Example (Local):
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/codereview
-# Example (Supabase Cloud):
-# DATABASE_URL=postgresql://postgres.xxx:password@aws-0-region.pooler.supabase.com:5432/postgres
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bugx_db
 
-# Session Secret (Generate via: openssl rand -hex 32)
+# Session Secret (Generate any random 32+ char string)
 SESSION_SECRET=super_secret_session_key_min_32_characters_long
 
 # Frontend URL for CORS
@@ -148,7 +244,7 @@ CLIENT_URL=http://localhost:5173
 
 ---
 
-### Step 3: Setup the Backend
+### Step 3: Setup & Run the Backend
 
 1. Navigate to `BackEnd/` and install dependencies:
    ```bash
@@ -156,32 +252,32 @@ CLIENT_URL=http://localhost:5173
    npm install
    ```
 
-2. Run database migrations to create the required tables (`users`, `session`, `reviews`, and `review_findings`):
+2. Run Drizzle database migrations to create all tables (`users`, `session`, `reviews`, `review_findings`):
    ```bash
    npm run db:generate
    npm run db:migrate
    ```
 
-   *(Optional)* To inspect and manage database records visually:
+   *(Optional)* To inspect database records visually in your browser:
    ```bash
    npm run db:studio
    ```
 
-3. Start the backend development server:
+3. Start the backend development server with hot-reloading:
    ```bash
    npm run dev
    ```
-   The backend server should start on **`http://localhost:3000`**.
+   *The backend will boot up at **`http://localhost:3000`**.*
 
 ---
 
-### Step 4: Setup the Frontend
+### Step 4: Setup & Run the Frontend
 
-In a new terminal window, navigate to `FrontEnd/`:
+In a separate terminal window:
 
-1. Install frontend dependencies:
+1. Navigate to `Frontend/`:
    ```bash
-   cd FrontEnd
+   cd Frontend
    npm install
    ```
 
@@ -190,84 +286,111 @@ In a new terminal window, navigate to `FrontEnd/`:
    npm run dev
    ```
 
-3. Open your browser and navigate to **`http://localhost:5173`**.
+3. Open **`http://localhost:5173`** in your browser.
 
 ---
 
 ## 📡 API Reference
 
-### **Authentication Endpoints** (`/auth`)
+### 🔐 Authentication Endpoints (`/auth`)
 
-| Method | Endpoint | Auth Required | Description | Request Body |
+| Method | Endpoint | Auth | Description | Request Body Payload |
 | :--- | :--- | :---: | :--- | :--- |
-| `POST` | `/auth/register` | No | Create a new user account | `{ "displayName": "Alex", "email": "alex@example.com", "password": "password123" }` |
-| `POST` | `/auth/login` | No | Authenticate existing user | `{ "email": "alex@example.com", "password": "password123" }` |
-| `GET` | `/auth/me` | Yes | Fetch currently logged-in user profile | *None (Cookie session)* |
-| `POST` | `/auth/logout` | Yes | Terminate session & destroy cookie | *None* |
-
-### **Review Submission & Persistence Endpoints** (`/reviews`) — *Phase 4*
-
-All `/reviews` endpoints require an authenticated session (`requireAuth` guard).
-
-| Method | Endpoint | Auth Required | Description | Request Body / Parameters |
-| :--- | :--- | :---: | :--- | :--- |
-| `POST` | `/reviews` | Yes | Submit code, persist `PENDING` record, invoke Gemini AI, save `COMPLETED` summary | `{ "code": "...", "language": "javascript", "title": "Optional" }` |
-| `GET` | `/reviews` | Yes | List all reviews belonging to the logged-in user (newest first) | *None* |
-| `GET` | `/reviews/:id` | Yes | Fetch complete details & findings of a review (ownership enforced) | URL param: `:id` (UUID) |
-| `DELETE` | `/reviews/:id` | Yes | Delete review and cascade delete associated findings | URL param: `:id` (UUID) |
-
-### **Legacy Direct AI Review Endpoint** (`/ai`)
-
-| Method | Endpoint | Auth Required | Description | Request Body |
-| :--- | :--- | :---: | :--- | :--- |
-| `POST` | `/ai/get-review` | No | Direct prompt-to-AI code review (stateless) | `{ "code": "function sum() { return 1 + 1; }" }` |
+| `POST` | `/auth/register` | Public | Create new developer account | `{ "displayName": "Alex", "email": "alex@dev.com", "password": "securePassword123" }` |
+| `POST` | `/auth/login` | Public | Authenticate session | `{ "email": "alex@dev.com", "password": "securePassword123" }` |
+| `GET` | `/auth/me` | Session | Fetch authenticated profile | *None (Cookie session)* |
+| `POST` | `/auth/logout` | Session | Destroy session & invalidate cookie | *None* |
 
 ---
 
-## 🛠️ Available Scripts
+### 📝 Code Review Endpoints (`/reviews`)
 
-### **Backend (`BackEnd/`)**
-- `npm run dev` — Starts the backend server with hot-reload via `tsx watch`.
-- `npm run build` — Compiles TypeScript code using `tsc`.
-- `npm start` — Runs the compiled production server.
-- `npm run db:generate` — Generates SQL migration files using Drizzle Kit.
+All `/reviews` endpoints are guarded by `requireAuth` middleware and scoped to the logged-in user.
+
+| Method | Endpoint | Auth | Description | Parameters / Payload |
+| :--- | :--- | :---: | :--- | :--- |
+| `POST` | `/reviews` | Session | Submit code for Gemini AI review & persistence | `{ "code": "...", "language": "javascript", "focus": "security", "title": "Auth Middleware" }` |
+| `GET` | `/reviews` | Session | List recent reviews belonging to user | *None (Query params: `?page=1&limit=20`)* |
+| `GET` | `/reviews/:id` | Session | Fetch full review details & structured findings | `:id` (UUID) |
+| `DELETE` | `/reviews/:id` | Session | Cascade delete review and all associated findings | `:id` (UUID) |
+
+---
+
+### ⚡ Direct AI Endpoint (`/ai`)
+
+| Method | Endpoint | Auth | Description | Request Body Payload |
+| :--- | :--- | :---: | :--- | :--- |
+| `POST` | `/ai/get-review` | Public | Direct stateless code review | `{ "code": "function calculate() { ... }" }` |
+
+---
+
+## 🧪 Testing & Quality Assurance
+
+BugX includes an automated test suite powered by **Vitest**, covering authentication flows, review lifecycle persistence, and Zod validation boundary conditions.
+
+To execute the test suite:
+
+```bash
+cd BackEnd
+npm test
+```
+
+To run tests with code coverage reporting:
+
+```bash
+npm run test:coverage
+```
+
+---
+
+## 🛠 Available Scripts
+
+### Backend (`BackEnd/`)
+- `npm run dev` — Starts backend server in watch mode using `tsx`.
+- `npm run build` — Compiles TypeScript to JavaScript in `dist/`.
+- `npm start` — Executes production bundle.
+- `npm test` — Runs automated Vitest suite.
+- `npm run db:generate` — Generates SQL migration files from Drizzle schema.
 - `npm run db:migrate` — Applies pending SQL migrations to PostgreSQL.
-- `npm run db:studio` — Opens Drizzle Studio in browser for database inspection.
+- `npm run db:studio` — Launches Drizzle Studio database visualizer.
 
-### **Frontend (`FrontEnd/`)**
-- `npm run dev` — Starts the Vite development server.
-- `npm run build` — Builds the optimized production bundle.
-- `npm run preview` — Locally previews the production build.
-
----
-
-## 🗺️ Roadmap & Implementation Status
- 
-| Phase | Milestone | Status | Details |
-| :---: | :--- | :---: | :--- |
-| **Phase 1** | Project Foundation & TypeScript | ✅ Completed | TypeScript configuration, environment templates, `tsx` hot-reloading |
-| **Phase 2** | Relational Database & Drizzle ORM | ✅ Completed | PostgreSQL schema (`users`, `session`, `reviews`, `review_findings`), migrations |
-| **Phase 3** | End-to-End Authentication | ✅ Completed | Argon2id hashing, `connect-pg-simple` sessions, AuthPage & Navbar UI |
-| **Phase 4** | Review Submission API & Persistence | ✅ Completed | User-scoped `/reviews` CRUD, lifecycle status tracking, review ID chips |
-| **Phase 5** | LLM Provider Adapter & Structured Output | ⏳ Next Up | Gemini structured JSON schema, Zod output validation, resilience fallbacks |
-| **Phase 6** | Enhanced Review Submission UI | 📋 Upcoming | Language & review focus selector, file upload, size counter |
-| **Phase 7** | Structured Findings UI | 📋 Upcoming | Severity badges, line highlights, actionable recommendations & code diffs |
-| **Phase 8** | Review History & Data Management | 📋 Upcoming | Paginated review history dashboard, search, delete review data |
-| **Phase 9+** | Security, Testing & Production Deployment | 📋 Upcoming | Rate limiting, automated tests, Docker Compose, cloud deployment |
+### Frontend (`Frontend/`)
+- `npm run dev` — Boots Vite development server with Hot Module Replacement.
+- `npm run build` — Generates optimized production build.
+- `npm run preview` — Locally previews production distribution.
+- `npm run lint` — Runs ESLint code quality checks.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
-1. Fork the repository.
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4. Push to the branch (`git push origin feature/AmazingFeature`).
-5. Open a Pull Request.
+Contributions to BugX are warmly welcomed! To contribute:
+
+1. **Fork** the repository.
+2. Create your feature branch:
+   ```bash
+   git checkout -b feature/AmazingNewFeature
+   ```
+3. Commit your changes with a conventional commit message:
+   ```bash
+   git commit -m "feat: add syntax tree parsing for Go and Rust"
+   ```
+4. Push to your branch:
+   ```bash
+   git push origin feature/AmazingNewFeature
+   ```
+5. Open a **Pull Request** detailing your modifications.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **ISC License**.
+This project is open-source and distributed under the **[ISC License](LICENSE)**.
+
+---
+
+<div align="center">
+
+Built with ❤️ by [BlackClover-pvt](https://github.com/BlackClover-pvt)
+
+</div>
