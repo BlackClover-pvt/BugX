@@ -1,68 +1,165 @@
+/* ─── BugX AI: Developer Design Tokens & Base System ─────────────── */
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  /* Color Palette: Canvas & Surfaces */
+  --bg-canvas: #090c14;
+  --bg-canvas-subtle: #0d111c;
+  --bg-surface: #111624;
+  --bg-surface-hover: #161c2e;
+  --bg-surface-elevated: #161c2c;
+  --bg-panel: rgba(16, 21, 33, 0.78);
+  --bg-panel-solid: #101521;
+  --bg-input: rgba(10, 13, 22, 0.7);
+  --bg-overlay: rgba(5, 7, 12, 0.75);
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Hairline Borders */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.09);
+  --border-hover: rgba(255, 255, 255, 0.16);
+  --border-accent: rgba(99, 102, 241, 0.35);
+  --border-accent-strong: rgba(99, 102, 241, 0.6);
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Brand Accents */
+  --brand-primary: #6366f1;
+  --brand-primary-light: #818cf8;
+  --brand-primary-dark: #4f46e5;
+  --brand-purple: #8b5cf6;
+  --brand-purple-light: #a78bfa;
+  --brand-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --brand-gradient-hover: linear-gradient(135deg, #6f72f8 0%, #9a6df7 100%);
+  --brand-glow: rgba(99, 102, 241, 0.3);
+
+  /* Semantic Status Colors */
+  --color-critical: #ef4444;
+  --color-critical-bg: rgba(239, 68, 68, 0.1);
+  --color-critical-border: rgba(239, 68, 68, 0.28);
+  --color-critical-text: #fca5a5;
+
+  --color-high: #f97316;
+  --color-high-bg: rgba(249, 115, 22, 0.1);
+  --color-high-border: rgba(249, 115, 22, 0.28);
+  --color-high-text: #fdba74;
+
+  --color-medium: #eab308;
+  --color-medium-bg: rgba(234, 179, 8, 0.09);
+  --color-medium-border: rgba(234, 179, 8, 0.26);
+  --color-medium-text: #fde047;
+
+  --color-low: #10b981;
+  --color-low-bg: rgba(16, 185, 129, 0.09);
+  --color-low-border: rgba(16, 185, 129, 0.25);
+  --color-low-text: #6ee7b7;
+
+  --color-info: #6366f1;
+  --color-info-bg: rgba(99, 102, 241, 0.1);
+  --color-info-border: rgba(99, 102, 241, 0.26);
+  --color-info-text: #a5b4fc;
+
+  /* Typography Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --text-ghost: #475569;
+
+  /* Fonts */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, monospace;
+
+  /* Elevation Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, 0.65);
+  --shadow-glow-indigo: 0 0 24px -2px rgba(99, 102, 241, 0.35);
+  --shadow-glow-purple: 0 0 28px -2px rgba(139, 92, 246, 0.35);
+
+  /* Transitions */
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 150ms var(--ease-smooth);
+  --transition-normal: 220ms var(--ease-smooth);
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-pill: 9999px;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+/* ─── Global Reset & Body ────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-a:hover {
-  color: #535bf2;
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  display: block;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  color-scheme: dark;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* ─── Custom Focus Rings ─────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--brand-primary-light);
+  outline-offset: 2px;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+/* ─── Global Scrollbars ──────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+/* ─── Global Typography Defaults ─────────────────────────────────── */
+button, input, select, textarea {
   font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  color: inherit;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+a {
+  color: var(--brand-primary-light);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--text-primary);
+}
+
+/* ─── Utilities ──────────────────────────────────────────────────── */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }

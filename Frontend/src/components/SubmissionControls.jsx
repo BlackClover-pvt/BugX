@@ -95,15 +95,16 @@ export default function SubmissionControls({
   }
 
   const colorClass = counterColor(byteCount, MAX_BYTES);
+  const pctUsed = Math.min((byteCount / MAX_BYTES) * 100, 100);
 
   return (
     <div className="sc-root">
 
-      {/* ── Top row: Language selector + File upload ── */}
+      {/* ── Top row: Language selector + File upload + Byte Counter ── */}
       <div className="sc-row sc-row-top">
 
         {/* Language Dropdown */}
-        <div className="sc-field">
+        <div className="sc-field sc-field-lang">
           <label className="sc-label" htmlFor="lang-select">Language</label>
           <div className="sc-select-wrap">
             <select
@@ -125,13 +126,14 @@ export default function SubmissionControls({
           <div className="sc-upload-row">
             {uploadedFileName ? (
               <div className="sc-file-chip">
-                <FileCode size={13} />
-                <span className="sc-file-name">{uploadedFileName}</span>
+                <FileCode size={13} className="sc-file-icon" />
+                <span className="sc-file-name" title={uploadedFileName}>{uploadedFileName}</span>
                 <button
                   className="sc-file-clear"
                   onClick={onClearFile}
                   title="Clear file"
                   id="btn-clear-file"
+                  aria-label="Remove uploaded file"
                 >
                   <X size={12} />
                 </button>
@@ -141,9 +143,10 @@ export default function SubmissionControls({
                 className="sc-upload-btn"
                 onClick={() => fileInputRef.current?.click()}
                 id="btn-upload-file"
+                type="button"
               >
                 <Upload size={13} />
-                <span>Upload file</span>
+                <span>Upload code</span>
               </button>
             )}
             <input
@@ -159,17 +162,19 @@ export default function SubmissionControls({
 
         {/* Byte Counter */}
         <div className="sc-field sc-field-counter">
-          <label className="sc-label">Code Size</label>
-          <div className={`sc-counter ${colorClass}`}>
-            <span className="sc-counter-val">{formatBytes(byteCount)}</span>
-            <span className="sc-counter-sep"> / </span>
-            <span className="sc-counter-max">{formatBytes(MAX_BYTES)} bytes</span>
-            <span className="sc-counter-pct">({Math.round((byteCount / MAX_BYTES) * 100)}%)</span>
+          <div className="sc-counter-header">
+            <label className="sc-label">Code Buffer</label>
+            <div className={`sc-counter ${colorClass}`}>
+              <span className="sc-counter-val">{formatBytes(byteCount)}</span>
+              <span className="sc-counter-sep">/</span>
+              <span className="sc-counter-max">{formatBytes(MAX_BYTES)} B</span>
+              <span className="sc-counter-pct">({Math.round(pctUsed)}%)</span>
+            </div>
           </div>
           <div className="sc-counter-bar-bg">
             <div
               className={`sc-counter-bar-fill ${colorClass}`}
-              style={{ width: `${Math.min((byteCount / MAX_BYTES) * 100, 100)}%` }}
+              style={{ width: `${pctUsed}%` }}
             />
           </div>
         </div>
@@ -177,7 +182,7 @@ export default function SubmissionControls({
 
       {/* ── Focus chips ── */}
       <div className="sc-row sc-row-focus">
-        <span className="sc-label">Review Focus</span>
+        <span className="sc-label sc-label-focus">Focus</span>
         <div className="sc-chips">
           {FOCUS_OPTIONS.map(opt => (
             <button
@@ -185,19 +190,21 @@ export default function SubmissionControls({
               id={`focus-chip-${opt.value.toLowerCase()}`}
               className={`sc-chip ${focus.includes(opt.value) ? 'sc-chip-active' : ''}`}
               onClick={() => toggleFocus(opt.value)}
+              type="button"
+              aria-pressed={focus.includes(opt.value)}
             >
               <span className="sc-chip-icon">{opt.icon}</span>
-              <span>{opt.label}</span>
+              <span className="sc-chip-text">{opt.label}</span>
             </button>
           ))}
         </div>
       </div>
 
       {/* ── Caution notice ── */}
-      <div className="sc-notice">
-        <AlertTriangle size={15} className="sc-notice-icon" />
-        <span>
-          <strong>Caution:</strong> Avoid submitting sensitive credentials or private keys.
+      <div className="sc-notice" role="note">
+        <AlertTriangle size={14} className="sc-notice-icon" />
+        <span className="sc-notice-text">
+          <strong>Security note:</strong> Do not include secrets, API tokens, or production passwords in review submissions.
         </span>
       </div>
 

@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import "prismjs/themes/prism-tomorrow.css";
 import Editor from "react-simple-code-editor";
 import prism from "prismjs";
-import { Sparkles, Loader2, Code2, BotMessageSquare, PartyPopper } from 'lucide-react';
+import { Sparkles, Loader2, Code2, BotMessageSquare, PartyPopper, AlertTriangle, ShieldCheck, Zap, Bug } from 'lucide-react';
 import api from './api';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
@@ -104,8 +104,8 @@ function CodeReviewApp() {
   }
 
   // ── Submit new review ──────────────────────────────────────────────────────
-  async function reviewCode() {
-    if (panelState === PANEL_STATE.LOADING) return;
+  const reviewCode = useCallback(async () => {
+    if (panelState === PANEL_STATE.LOADING || !code.trim()) return;
     setPanelState(PANEL_STATE.LOADING);
     setReviewData(null);
     setFindings([]);
@@ -128,7 +128,19 @@ function CodeReviewApp() {
       setErrorMsg(msg);
       setPanelState(PANEL_STATE.ERROR);
     }
-  }
+  }, [code, language, focus, panelState]);
+
+  // ── Keyboard shortcut: Ctrl+Enter / Cmd+Enter to run review ────────────────
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        reviewCode();
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [reviewCode]);
 
   // ─── Splash loader ────────────────────────────────────────────────────────
   if (authLoading) {
@@ -138,8 +150,8 @@ function CodeReviewApp() {
           <Code2 size={36} className="splash-logo" />
         </div>
         <div className="splash-spinner-wrap">
-          <Loader2 size={24} className="splash-spinner" />
-          <span>Starting BugX...</span>
+          <Loader2 size={20} className="splash-spinner" />
+          <span>Starting BugX Studio…</span>
         </div>
       </div>
     );
@@ -149,6 +161,7 @@ function CodeReviewApp() {
 
   const langLabel = LANGUAGES.find(l => l.value === language)?.label ?? language;
   const isLoading = panelState === PANEL_STATE.LOADING;
+  const lineCount = code ? code.split('\n').length : 0;
 
   // ─── Workspace ────────────────────────────────────────────────────────────
   return (
@@ -157,13 +170,23 @@ function CodeReviewApp() {
 
       <main className="main-content">
         {/* ─── Left: Code Editor Panel ─── */}
-        <section className="panel editor-panel">
+        <section className="panel editor-panel" aria-label="Code Input Panel">
           <div className="panel-header">
             <div className="panel-title">
-              <Code2 size={16} className="panel-icon" />
-              <span>Input Code</span>
+              <div className="panel-icon-box">
+                <Code2 size={15} className="panel-icon" />
+              </div>
+              <span className="panel-title-text">Input Code</span>
+              <span className="panel-meta-tag">{lineCount} {lineCount === 1 ? 'line' : 'lines'}</span>
             </div>
-            <span className="panel-lang-badge">{langLabel}</span>
+            <div className="panel-header-right">
+              {uploadedFileName && (
+                <span className="panel-file-badge" title={uploadedFileName}>
+                  {uploadedFileName}
+                </span>
+              )}
+              <span className="panel-lang-badge">{langLabel}</span>
+            </div>
           </div>
 
           <div className="editor-wrapper">
@@ -174,8 +197,9 @@ function CodeReviewApp() {
               padding={16}
               className="code-editor"
               style={{
-                fontFamily: '"Fira Code", "JetBrains Mono", Consolas, monospace',
-                fontSize: 15,
+                fontFamily: '"JetBrains Mono", "Fira Code", Consolas, monospace',
+                fontSize: 14,
+                lineHeight: 1.65,
                 minHeight: '100%',
               }}
             />
@@ -193,27 +217,39 @@ function CodeReviewApp() {
           />
 
           <div className="editor-footer">
+            <div className="editor-footer-hint">
+              <kbd className="kbd-shortcut">Ctrl</kbd> + <kbd className="kbd-shortcut">Enter</kbd> to review
+            </div>
             <button
               id="btn-review-code"
               onClick={reviewCode}
               disabled={isLoading || !code.trim()}
               className={`review-btn ${isLoading ? 'review-btn-loading' : ''}`}
+              type="button"
             >
               {isLoading ? (
-                <><Loader2 size={16} className="btn-spinner" /><span>Reviewing...</span></>
+                <>
+                  <Loader2 size={15} className="btn-spinner" />
+                  <span>Analyzing Code…</span>
+                </>
               ) : (
-                <><Sparkles size={16} /><span>Review Code</span></>
+                <>
+                  <Sparkles size={15} />
+                  <span>Review Code</span>
+                </>
               )}
             </button>
           </div>
         </section>
 
         {/* ─── Right: AI Review Panel ─── */}
-        <section className="panel review-panel">
+        <section className="panel review-panel" aria-label="AI Feedback Panel">
           <div className="panel-header">
             <div className="panel-title">
-              <BotMessageSquare size={16} className="panel-icon purple" />
-              <span>AI Feedback</span>
+              <div className="panel-icon-box purple">
+                <BotMessageSquare size={15} className="panel-icon purple" />
+              </div>
+              <span className="panel-title-text">AI Diagnostics &amp; Insights</span>
             </div>
             <div className="panel-header-right">
               {currentReviewId && !isLoading && (
@@ -222,48 +258,86 @@ function CodeReviewApp() {
                 </span>
               )}
               {panelState === PANEL_STATE.SUCCESS && (
-                <span className="panel-status-badge">Saved</span>
+                <span className="panel-status-badge">
+                  <span className="status-dot-green" />
+                  Saved
+                </span>
               )}
               {isLoading && (
-                <span className="panel-status-badge panel-status-analyzing">Analyzing...</span>
+                <span className="panel-status-badge panel-status-analyzing">
+                  <Loader2 size={11} className="badge-spinner" />
+                  Deep Analysis…
+                </span>
               )}
             </div>
           </div>
 
           <div className="review-content">
 
+            {/* ─── State 1: IDLE ─── */}
             {panelState === PANEL_STATE.IDLE && (
               <div className="review-empty">
                 <div className="empty-icon-wrap">
-                  <Sparkles size={32} />
+                  <Sparkles size={28} />
                 </div>
-                <h3>Ready to review your code</h3>
+                <h3>Intelligent Code Inspection</h3>
                 <p>
-                  Paste your code on the left, pick a language &amp; focus, then click{' '}
-                  <strong>Review Code</strong> to get instant AI-powered feedback.
-                  Open <strong>History</strong> in the navbar to revisit past reviews.
+                  Paste or upload your code, choose your analysis focus, then run <strong>Review Code</strong> to perform deep static diagnostics and AI remediation.
                 </p>
-              </div>
-            )}
-
-            {panelState === PANEL_STATE.LOADING && (
-              <div className="review-empty">
-                <div className="empty-icon-wrap pulse-anim">
-                  <Loader2 size={32} className="btn-spinner" />
+                <div className="empty-features-grid">
+                  <div className="empty-feature-card">
+                    <Bug size={14} className="feature-card-icon" />
+                    <span>Logic &amp; Edge Cases</span>
+                  </div>
+                  <div className="empty-feature-card">
+                    <ShieldCheck size={14} className="feature-card-icon" />
+                    <span>Security Vulnerabilities</span>
+                  </div>
+                  <div className="empty-feature-card">
+                    <Zap size={14} className="feature-card-icon" />
+                    <span>Performance Optimizations</span>
+                  </div>
                 </div>
-                <h3>Analyzing your code…</h3>
-                <p>Our AI is carefully reviewing for bugs, security issues, and improvements.</p>
               </div>
             )}
 
+            {/* ─── State 2: LOADING ─── */}
+            {panelState === PANEL_STATE.LOADING && (
+              <div className="review-empty review-loading-state">
+                <div className="loading-radar-wrap pulse-anim">
+                  <div className="radar-ping" />
+                  <Loader2 size={32} className="btn-spinner loading-radar-icon" />
+                </div>
+                <h3>Analyzing Your Code…</h3>
+                <p>Evaluating AST structure, detecting security flaws, and generating actionable code fixes.</p>
+                <div className="loading-steps-pills">
+                  <span className="loading-pill active">Syntax &amp; Flow</span>
+                  <span className="loading-pill active">Vulnerability Scan</span>
+                  <span className="loading-pill">Synthesizing Fixes</span>
+                </div>
+              </div>
+            )}
+
+            {/* ─── State 3: ERROR ─── */}
             {panelState === PANEL_STATE.ERROR && (
               <div className="review-error">
-                <div className="review-error-title">❌ Review Failed</div>
+                <div className="review-error-title">
+                  <AlertTriangle size={18} className="review-error-icon" />
+                  <span>Review Failed</span>
+                </div>
                 <p className="review-error-msg">{errorMsg}</p>
-                <p className="review-error-hint">Please check the server is running and try again.</p>
+                <p className="review-error-hint">Please check that the server is operational and try again.</p>
+                <button
+                  className="review-error-retry"
+                  onClick={reviewCode}
+                  type="button"
+                >
+                  Retry Analysis
+                </button>
               </div>
             )}
 
+            {/* ─── State 4: SUCCESS ─── */}
             {panelState === PANEL_STATE.SUCCESS && reviewData && (
               <>
                 <RiskMeter
@@ -274,6 +348,10 @@ function CodeReviewApp() {
 
                 {findings.length > 0 ? (
                   <div className="findings-list">
+                    <div className="findings-header">
+                      <span className="findings-header-title">Diagnostic Findings</span>
+                      <span className="findings-header-count">{findings.length} issues flagged</span>
+                    </div>
                     {findings.map((finding, i) => (
                       <FindingCard key={finding.id ?? i} finding={finding} index={i} />
                     ))}
@@ -281,12 +359,12 @@ function CodeReviewApp() {
                 ) : (
                   <div className="review-empty review-clean">
                     <div className="empty-icon-wrap clean-icon-wrap">
-                      <PartyPopper size={32} />
+                      <PartyPopper size={30} />
                     </div>
-                    <h3>Clean Code!</h3>
+                    <h3>Zero Defects Detected</h3>
                     <p>
-                      🎉 No critical issues or security defects identified.
-                      Your code looks solid — great work!
+                      🎉 No critical bugs, security vulnerabilities, or anti-patterns identified.
+                      Your implementation is clean, robust, and production-ready!
                     </p>
                   </div>
                 )}
@@ -297,7 +375,7 @@ function CodeReviewApp() {
         </section>
       </main>
 
-      {/* ─── History Drawer (portal-like overlay) ─── */}
+      {/* ─── History Drawer ─── */}
       <HistoryDrawer
         isOpen={historyOpen}
         onClose={() => setHistoryOpen(false)}

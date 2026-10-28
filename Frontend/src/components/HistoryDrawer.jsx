@@ -123,15 +123,34 @@ export default function HistoryDrawer({ isOpen, onClose, onReopenReview }) {
         {/* Header */}
         <div className="hist-header">
           <div className="hist-header-title">
-            <Clock size={17} className="hist-header-icon" />
-            <span>Review History</span>
+            <div className="hist-header-icon-wrap">
+              <Clock size={16} className="hist-header-icon" />
+            </div>
+            <div>
+              <span className="hist-title-text">Review History</span>
+              <span className="hist-count-tag">{reviews.length} saved</span>
+            </div>
           </div>
           <div className="hist-header-right">
-            <button className="hist-refresh-btn" onClick={fetchReviews} title="Refresh" id="btn-history-refresh">
+            <button
+              className="hist-refresh-btn"
+              onClick={fetchReviews}
+              title="Refresh history"
+              id="btn-history-refresh"
+              aria-label="Refresh reviews"
+              type="button"
+            >
               <RotateCcw size={14} />
             </button>
-            <button className="hist-close-btn" onClick={onClose} title="Close" id="btn-history-close">
-              <X size={18} />
+            <button
+              className="hist-close-btn"
+              onClick={onClose}
+              title="Close history"
+              id="btn-history-close"
+              aria-label="Close history drawer"
+              type="button"
+            >
+              <X size={16} />
             </button>
           </div>
         </div>
@@ -142,14 +161,16 @@ export default function HistoryDrawer({ isOpen, onClose, onReopenReview }) {
           {/* Loading */}
           {loadingList && (
             <div className="hist-center">
-              <Loader2 size={24} className="hist-spinner" />
-              <span>Loading reviews…</span>
+              <div className="hist-spinner-wrap">
+                <Loader2 size={24} className="hist-spinner" />
+              </div>
+              <span className="hist-loading-text">Retrieving saved reviews…</span>
             </div>
           )}
 
           {/* Error */}
           {!loadingList && listError && (
-            <div className="hist-error">
+            <div className="hist-error" role="alert">
               <AlertCircle size={16} />
               <span>{listError}</span>
             </div>
@@ -158,9 +179,11 @@ export default function HistoryDrawer({ isOpen, onClose, onReopenReview }) {
           {/* Empty */}
           {!loadingList && !listError && reviews.length === 0 && (
             <div className="hist-center hist-empty">
-              <Code2 size={36} className="hist-empty-icon" />
-              <h4>No reviews yet</h4>
-              <p>Submit your first code review to see it here.</p>
+              <div className="hist-empty-icon-box">
+                <Code2 size={32} className="hist-empty-icon" />
+              </div>
+              <h4>No reviews recorded</h4>
+              <p>Submit your code in the workspace to save and track reviews over time.</p>
             </div>
           )}
 
@@ -173,7 +196,7 @@ export default function HistoryDrawer({ isOpen, onClose, onReopenReview }) {
 
                     {/* Top row */}
                     <div className="hist-item-top">
-                      <span className={`hist-lang-pill`}>
+                      <span className="hist-lang-pill">
                         {LANG_LABEL[review.language] ?? review.language}
                       </span>
                       {review.overallRisk ? (
@@ -202,20 +225,24 @@ export default function HistoryDrawer({ isOpen, onClose, onReopenReview }) {
                       className="hist-action-btn hist-reopen-btn"
                       onClick={() => handleReopen(review.id)}
                       disabled={reopening === review.id}
-                      title="Reopen review"
+                      title="Reopen review in workspace"
                       id={`btn-reopen-${review.id.slice(0, 8)}`}
+                      aria-label="Reopen review"
+                      type="button"
                     >
                       {reopening === review.id
-                        ? <Loader2 size={14} className="hist-spinner-inline" />
-                        : <RotateCcw size={14} />}
+                        ? <Loader2 size={13} className="hist-spinner-inline" />
+                        : <RotateCcw size={13} />}
                     </button>
                     <button
                       className="hist-action-btn hist-delete-btn"
                       onClick={() => requestDelete(review)}
-                      title="Delete review"
+                      title="Delete review from history"
                       id={`btn-delete-${review.id.slice(0, 8)}`}
+                      aria-label="Delete review"
+                      type="button"
                     >
-                      <Trash2 size={14} />
+                      <Trash2 size={13} />
                     </button>
                   </div>
                 </li>

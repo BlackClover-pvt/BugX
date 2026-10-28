@@ -1,3 +1,4 @@
+import { ShieldAlert, AlertTriangle, AlertCircle, CheckCircle2 } from 'lucide-react';
 import './RiskMeter.css';
 
 const RISK_CONFIG = {
@@ -5,59 +6,70 @@ const RISK_CONFIG = {
     label: 'Critical Risk',
     color: 'risk-critical',
     icon: '🔴',
-    bar: 100,
-    description: 'Severe issues detected. Immediate action required.',
+    score: '100%',
+    IconComponent: ShieldAlert,
+    description: 'Severe vulnerabilities detected. Immediate action required.',
   },
   HIGH: {
     label: 'High Risk',
     color: 'risk-high',
     icon: '🟠',
-    bar: 75,
-    description: 'Significant problems found. Prioritize fixes.',
+    score: '75%',
+    IconComponent: AlertTriangle,
+    description: 'Significant issues identified. Prioritize fixes before release.',
   },
   MEDIUM: {
     label: 'Medium Risk',
     color: 'risk-medium',
     icon: '🟡',
-    bar: 50,
-    description: 'Notable issues present. Address before release.',
+    score: '50%',
+    IconComponent: AlertCircle,
+    description: 'Notable issues present. Address before staging deployment.',
   },
   LOW: {
     label: 'Low Risk',
     color: 'risk-low',
     icon: '🟢',
-    bar: 25,
-    description: 'Minor improvements suggested. Code is generally solid.',
+    score: '25%',
+    IconComponent: CheckCircle2,
+    description: 'Minor suggestions. Code structure is fundamentally sound.',
   },
 };
 
 export default function RiskMeter({ overallRisk, findingCount, summary }) {
   const config = RISK_CONFIG[overallRisk] ?? RISK_CONFIG.LOW;
+  const IconComp = config.IconComponent;
 
   return (
     <div className={`risk-meter ${config.color}`}>
       {/* ── Header row ── */}
       <div className="risk-header">
         <div className="risk-badge-wrap">
-          <span className="risk-icon">{config.icon}</span>
-          <span className="risk-label">{config.label}</span>
+          <div className="risk-icon-pill">
+            <IconComp size={15} className="risk-svg-icon" />
+            <span className="risk-label">{config.label}</span>
+          </div>
+          <span className="risk-score-pill">Impact: {config.score}</span>
         </div>
+
         <span className="risk-count">
-          {findingCount} {findingCount === 1 ? 'finding' : 'findings'}
+          {findingCount} {findingCount === 1 ? 'Finding' : 'Findings'}
         </span>
       </div>
 
-      {/* ── Bar ── */}
+      {/* ── Gauge Bar ── */}
       <div className="risk-bar-bg">
         <div
           className="risk-bar-fill"
-          style={{ width: `${config.bar}%` }}
+          style={{ width: `${config.score}` }}
         />
       </div>
 
-      {/* ── Summary ── */}
+      {/* ── Summary Box ── */}
       {summary && (
-        <p className="risk-summary">{summary}</p>
+        <div className="risk-summary-box">
+          <p className="risk-summary">{summary}</p>
+        </div>
       )}
     </div>
   );

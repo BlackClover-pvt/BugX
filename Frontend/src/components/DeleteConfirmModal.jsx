@@ -42,7 +42,7 @@ export default function DeleteConfirmModal({ isOpen, title, deleting, onCancel, 
         <div className="dcm-body">
           <p className="dcm-description">
             Are you sure you want to delete{' '}
-            <span className="dcm-review-title">"{title}"</span>?
+            <span className="dcm-review-title">&ldquo;{title}&rdquo;</span>?
           </p>
           <p className="dcm-warning">
             All associated findings will be permanently removed from the database.

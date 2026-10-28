@@ -186,7 +186,7 @@ export default function AuthModal({ isOpen, onClose }) {
         {/* Footer toggle */}
         <p className="auth-footer">
           {mode === 'login' ? (
-            <>Don't have an account? <span onClick={() => switchMode('signup')}>Sign Up</span></>
+            <>Don&apos;t have an account? <span onClick={() => switchMode('signup')}>Sign Up</span></>
           ) : (
             <>Already have an account? <span onClick={() => switchMode('login')}>Login</span></>
           )}
