@@ -1,4 +1,4 @@
-﻿# 🐞 BugX — AI-Powered Intelligent Code Review Platform
+# 🐞 BugX — AI-Powered Intelligent Code Review Platform
 
 <div align="center">
 
@@ -9,7 +9,7 @@
 
 **A high-performance, full-stack automated code review workspace powered by Google Gemini, TypeScript, Express, PostgreSQL, and React.**
 
-[Key Features](#-key-features) • [Architecture](#-architecture--data-flow) • [Tech Stack](#-technology-stack) • [Quick Start](#-quick-start-guide) • [API Reference](#-api-reference) • [Testing](#-testing--quality-assurance)
+[Key Features](#-key-features) • [Architecture](#-architecture--data-flow) • [Tech Stack](#-technology-stack) • [Quick Start](#-quick-start-guide) • [API Reference](#-api-reference) • [Testing](#-testing--quality-assurance) • [Authors & Contact](#-authors--contact)
 
 </div>
 
@@ -388,8 +388,19 @@ This project is open-source and distributed under the **[ISC License](LICENSE)**
 
 ---
 
+## 👥 Authors & Contact
+
+**Developed by BlackClover**
+- **Aritra Chowdhury**
+- **Kaustav Saha**
+
+📫 **Email**: [blackclover.rick@gmail.com](mailto:blackclover.rick@gmail.com)
+
+---
+
 <div align="center">
 
-Built with ❤️ by [BlackClover-pvt](https://github.com/BlackClover-pvt)
+Developed by **BlackClover** (Aritra Chowdhury, Kaustav Saha)  
+📫 [blackclover.rick@gmail.com](mailto:blackclover.rick@gmail.com)
 
 </div>
